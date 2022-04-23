@@ -13,7 +13,13 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: Container(
-            child: Text('Hello World'),
+            child: const Text('Hello, world!',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20, 
+              color: Colors.blue
+              ),
+            ),
           ),
         ),
       ),
