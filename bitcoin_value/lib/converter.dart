@@ -35,7 +35,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   TextEditingController BitCoinEditingController = TextEditingController();
 
-  var name = 'Crypto/Fiat Name', unit = '', value = 0.00, exchangedValue = 0.00, getValue = 0.00;
+  var name = 'Crypto/Fiat/Commodity Money', unit = '', value = 0.00, exchangedValue = 0.00, getValue = 0.00;
 
   List<String> currency = ['Crypto', 'Fiat', 'Commodity'];
   List<String> rate = [];
@@ -43,75 +43,13 @@ class _MainPageState extends State<MainPage> {
   String? selectedCurrency;
   String? selectedRate;
 
-  List<String> crypto = [
-    'btc',
-    'eth',
-    'ltc',
-    'bch',
-    'bnb',
-    'eos',
-    'xrp',
-    'xlm',
-    'link',
-    'dot',
-    'yfi',
-    'bits',
-    'sats'
-  ];
+  List<String> crypto = ['btc','eth','ltc','bch','bnb','eos','xrp','xlm','link','dot','yfi','bits','sats'];
 
-  List<String> fiat = [
-    'usd',
-    'aed',
-    'ars',
-    'aud',
-    'bdt',
-    'bhd',
-    'bmd',
-    'brl',
-    'cad',
-    'chf',
-    'clp',
-    'cny',
-    'czk',
-    'dkk',
-    'eur',
-    'gbp',
-    'hkd',
-    'huf',
-    'idr',
-    'ils',
-    'inr',
-    'jpy',
-    'krw',
-    'kwd',
-    'lkr',
-    'mmk',
-    'mxn',
-    'myr',
-    'ngn',
-    'nok',
-    'nzd',
-    'php',
-    'pkr',
-    'pln',
-    'rub',
-    'sar',
-    'sek',
-    'Ssgd',
-    'thb',
-    'try',
-    'twd',
-    'uah',
-    'vef',
-    'vnd',
-    'zar',
-    'xdr'
-  ];
+  List<String> fiat = ['usd','aed','ars','aud','bdt','bhd','bmd','brl','cad','chf','clp','cny','czk','dkk',
+  'eur','gbp','hkd','huf','idr','ils','inr','jpy','krw','kwd','lkr','mmk','mxn','myr','ngn','nok','nzd',
+  'php','pkr','pln','rub','sar','sek','Ssgd','thb','try','twd','uah','vef','vnd','zar','xdr'];
 
-  List<String> commodity = [
-    'xag',
-    'xau'
-  ];
+  List<String> commodity = ['xag','xau'];
 
   @override
   Widget build(BuildContext context) {

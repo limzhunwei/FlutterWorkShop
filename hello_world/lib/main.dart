@@ -1,46 +1,22 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    String name = "Lim";
-    TextEditingController nameEditingController = TextEditingController();
-    
     return MaterialApp(
-      title: "Hello World",
+      title: 'Beautiful UI with Flutter Workshop',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Hellow World",
+          title: Text('Beautiful UI with Flutter Workshop'),
+        ),
+        body: Center(
+          child: Container(
+            child: Text('Hello World'),
           ),
         ),
-       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              const Text("Enter Your Name:"),
-              TextField(
-                controller: nameEditingController,
-              ),
-              ElevatedButton(
-                onPressed:(){
-                  setState(){
-                    name = nameEditingController.text;
-                  }
-              },
-                child: Text("Press Me"),
-                ),
-                Text(name)
-              ]
-            )
-        )
-      )
+      ),
     );
   }
 }
