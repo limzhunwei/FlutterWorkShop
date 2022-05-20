@@ -66,4 +66,3 @@ class _MySplashScreenState extends State<MySplashScreen> {
     );
   }
 }
-

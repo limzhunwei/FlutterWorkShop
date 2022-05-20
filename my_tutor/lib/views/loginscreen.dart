@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_tutor/views/registration.dart';
+import 'package:my_tutor/views/newuser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/constant.dart';
+import '../models/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late double screenHeight, screenWidth, ctrwidth;
   bool remember = false;
+  bool _passwordVisible = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -85,8 +89,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 15,),
                       TextFormField(
                         controller: _passwordController,
-                        obscureText: true,
+                        obscureText: _passwordVisible,
                         decoration: InputDecoration(
+                           suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                    ),
                             labelText: 'Password',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0))),
@@ -124,17 +140,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _loginUser,
                         ),
                       ),
-                      const SizedBox(height: 10,),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context,
-                              MaterialPageRoute(
-                                builder: (context) => Registration()),
-                                );},
-                            child: const Text( "New User",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontSize: 17),)
+                      const SizedBox(height: 15,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text( "New User?",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold),),
+                                  const SizedBox(width: 5),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NewUser()),
+                                    );},
+                                child: const Text( "Register Here",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 17),)
+                              ),
+                            ],
                           ),
                         ],
                       )               
@@ -157,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (value) {
         await prefs.setString('email', email);
-        await prefs.setString('pass', password);
+        await prefs.setString('password', password);
         await prefs.setBool('remember', true);
         Fluttertoast.showToast(
             msg: "Preference Stored",
@@ -167,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 14.0);
       } else {
         await prefs.setString('email', '');
-        await prefs.setString('pass', '');
+        await prefs.setString('password', '');
         await prefs.setBool('remember', false);
         _emailController.text = "";
         _passwordController.text = "";
@@ -203,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> loadPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = (prefs.getString('email')) ?? '';
-    String password = (prefs.getString('pass')) ?? '';
+    String password = (prefs.getString('password')) ?? '';
     remember = (prefs.getBool('remember')) ?? false;
 
     if (remember) {
@@ -216,40 +242,32 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginUser() {
-    // String _email = _emailController.text;
-    // String _password = _passwordController.text;
-    // if (_formKey.currentState!.validate()) {
-    //   _formKey.currentState!.save();
-    //   http.post(
-    //       Uri.parse("http://10.31.47.223/my_tutor/mobile/php/login_user.php"),
-    //       body: {"email": _email, "password": _password}).then((response) {
-    //     var data = jsonDecode(response.body);
-    //     if (response.statusCode == 200 && data['status'] == 'success') {
-    //       print(response.body);
-    //       // User user = User.fromJson(data['data']);
+    String _email = _emailController.text;
+    String _password = _passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      http.post(
+          Uri.parse(CONSTANT.server + "/my_tutor/mobile/php/login_user.php"),
+          body: {"email": _email, "password": _password}).then((response) {
+          var data = jsonDecode(response.body);
+         if (response.statusCode == 200 && data['status'] == 'success') {
+          User user = User.fromJson(data['data']);
 
-    //       // Fluttertoast.showToast(
-    //       //     msg: "Success",
-    //       //     toastLength: Toast.LENGTH_SHORT,
-    //       //     gravity: ToastGravity.BOTTOM,
-    //       //     timeInSecForIosWeb: 1,
-    //       //     fontSize: 16.0);
-    //       // Navigator.pushReplacement(
-    //       //     context,
-    //       //     MaterialPageRoute(
-    //       //         builder: (content) => MainScreen(
-    //       //               admin: admin,
-    //       //             )));
-    //     } 
-    //     // else {
-    //     //   Fluttertoast.showToast(
-    //     //       msg: "Failed",
-    //     //       toastLength: Toast.LENGTH_SHORT,
-    //     //       gravity: ToastGravity.BOTTOM,
-    //     //       timeInSecForIosWeb: 1,
-    //     //       fontSize: 16.0);
-    //     // }
-    //   });
-    // }
+          Fluttertoast.showToast(
+              msg: "Login Success",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              fontSize: 16.0);
+        } else {
+          Fluttertoast.showToast(
+              msg: "Failed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              fontSize: 16.0);
+        }
+      });
+    }
   }
 }
