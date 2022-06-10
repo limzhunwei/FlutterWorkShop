@@ -324,7 +324,6 @@ class _NewUserState extends State<NewUser> {
           "password": _userpassword,
           "image": base64Image,
         }).then((response) {
-      print(response.body);
       var data = jsonDecode(response.body);
       if (response.statusCode == 200 && data['status'] == 'success') {
         Fluttertoast.showToast(

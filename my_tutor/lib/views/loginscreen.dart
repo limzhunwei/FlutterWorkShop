@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_tutor/views/mainscreen.dart';
 import 'package:my_tutor/views/newuser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -259,9 +260,15 @@ class _LoginScreenState extends State<LoginScreen> {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               fontSize: 16.0);
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (content) => MainScreen(
+                        user: user,
+                      )));
         } else {
           Fluttertoast.showToast(
-              msg: "Failed",
+              msg: "Login Failed",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
