@@ -12,7 +12,12 @@ $search = $_POST['search'];
 
 $page_first_result = ($pageno - 1) * $results_per_page;
 
-$sqlloadtutors = "SELECT * FROM `tbl_tutors` ORDER BY `tbl_tutors`.`tutor_id` ASC";
+$sqlloadtutors = "SELECT `tbl_tutors`.`tutor_id`, `tbl_tutors`.`tutor_email`, `tbl_tutors`.`tutor_phone`, `tbl_tutors`.`tutor_name`, `tbl_tutors`.`tutor_password`, `tbl_tutors`.`tutor_description`, `tbl_tutors`.`tutor_datereg`, group_concat(Distinct tbl_subjects.subject_name SEPARATOR ', \n') AS `tutor_course`
+                    FROM `tbl_tutors` 
+                    INNER JOIN `tbl_subjects` 
+                    ON `tbl_tutors`.`tutor_id` = `tbl_subjects`.`tutor_id` 
+                    GROUP BY `tbl_tutors`.`tutor_id` 
+                    ORDER BY `tbl_tutors`.`tutor_id` ASC";
 
 $result = $conn->query($sqlloadtutors);
 $number_of_result = $result->num_rows;
@@ -31,6 +36,7 @@ if ($result->num_rows > 0) {
         $tutorlist['tutor_password'] = $row['tutor_password'];
         $tutorlist['tutor_description'] = $row['tutor_description'];
         $tutorlist['tutor_datereg'] = $row['tutor_datereg'];
+        $tutorlist['tutor_course'] = $row['tutor_course'];
         array_push($tutors["tutors"],$tutorlist);
     }
     $response = array('status' => 'success', 'pageno'=>"$pageno",'numofpage'=>"$number_of_page", 'data' => $tutors);
