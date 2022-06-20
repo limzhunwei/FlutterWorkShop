@@ -22,6 +22,8 @@ class _MainScreenState extends State<MainScreen> {
   String titlecenter = "Loading...";
   String appbarTitle = "Subject";
   var appBarTitleText = new Text("Subject");
+  TextEditingController searchController = TextEditingController();
+  String search = "";
 
   @override
   void initState() {
@@ -31,9 +33,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: appBarTitleText,
-      ),
+      // appBar: AppBar(
+      //   title: appBarTitleText,
+      // ),
       body: Center( child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -65,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.lightBlue,
+        selectedItemColor: Color.fromRGBO(3, 169, 244, 1),
         onTap: _onItemTapped,
       ),
     );
@@ -74,7 +76,6 @@ class _MainScreenState extends State<MainScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     SubjectScreen(),
     TutorScreen(),
-
     Text(
       'Subscribe Page',
     ),
@@ -89,28 +90,30 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if(index == 0){
-        appbarTitle = "Subject";
-        appBarTitleText = new Text(appbarTitle);
-      }
-      else if(index == 1){
-        appbarTitle = "Tutors";
-        appBarTitleText = new Text(appbarTitle);
-      }
-      else if(index == 2){
-        appbarTitle = "Subscribe";
-        appBarTitleText = new Text(appbarTitle);
-      }
-      else if(index == 3){
-        appbarTitle = "Favourite";
-        appBarTitleText = new Text(appbarTitle);
-      }
-      else if(index == 4){
-        appbarTitle = "Profile";
-        appBarTitleText = new Text(appbarTitle);
-      }
+      // if(index == 0){
+      //   appbarTitle = "Subject";
+      //   appBarTitleText = new Text(appbarTitle);
+      // }
+      // else if(index == 1){
+      //   appbarTitle = "Tutors";
+      //   appBarTitleText = new Text(appbarTitle);
+      // }
+      // else if(index == 2){
+      //   appbarTitle = "Subscribe";
+      //   appBarTitleText = new Text(appbarTitle);
+      // }
+      // else if(index == 3){
+      //   appbarTitle = "Favourite";
+      //   appBarTitleText = new Text(appbarTitle);
+      // }
+      // else if(index == 4){
+      //   appbarTitle = "Profile";
+      //   appBarTitleText = new Text(appbarTitle);
+      // }
     });
   }
+  
+
   
 
 }

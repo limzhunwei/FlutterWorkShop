@@ -7,6 +7,7 @@ import '../models/constant.dart';
 import '../models/tutor.dart';
 
 
+
 class TutorScreen extends StatefulWidget {
   const TutorScreen({Key? key}) : super(key: key);
 
@@ -41,6 +42,9 @@ class _TutorScreenState extends State<TutorScreen> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Tutors",),
+      ),
             body: tutorList.isEmpty
           ? Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -60,9 +64,10 @@ class _TutorScreenState extends State<TutorScreen> {
                       childAspectRatio: (1 / 1),
                       children: List.generate(tutorList.length, (index) {
                         return InkWell(
-                          splashColor: Colors.amber,
+                          splashColor: Colors.blue,
                           onTap: () => {_loadTutorDetails(index)},
                           child: Card(
+                            color: Colors.blue[50],
                               child: Column(
                             children: [
                               Flexible(
@@ -94,10 +99,14 @@ class _TutorScreenState extends State<TutorScreen> {
                                             fontWeight: FontWeight.bold),
                                             ),
                                       Text(
-                                        tutorList[index].tutor_email.toString()
+                                        tutorList[index].tutor_email.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16,),
                                         ),
                                       Text(
-                                        tutorList[index].tutor_phone.toString()
+                                        tutorList[index].tutor_phone.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16,),
                                         ),
                                     ],
                                   ))
@@ -259,6 +268,18 @@ class _TutorScreenState extends State<TutorScreen> {
                             ),
                         ],
                       ),
+                      const SizedBox(height: 10,),
+                      Row(
+                      children: [
+                        const Icon(
+                          Icons.menu_book_rounded),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            tutorList[index].tutor_course.toString(),),
+                        ),
+                      ],
+                    ),
                     ])
               ],
             )),

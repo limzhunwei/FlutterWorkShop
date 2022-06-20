@@ -21,11 +21,21 @@ class _SubjectScreenState extends State<SubjectScreen> {
    late double screenHeight, screenWidth, resWidth;
   var numofpage, curpage = 1;
   var color;
+  TextEditingController _searchController = TextEditingController();
+  String dropdownvalue = 'All';
+  var rating = [
+    'All',
+    '5',
+    '4',
+    '3',
+    '2',
+    '1',
+  ];
   
  @override
   void initState() {
     super.initState();
-    _loadSubjects(1, search);
+    _loadSubjects(1, search, dropdownvalue);
   }
 
   @override
@@ -39,6 +49,17 @@ class _SubjectScreenState extends State<SubjectScreen> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Subject",),
+         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              _loadSearchDialog();
+            },
+          )
+        ],
+      ),
             body: subjectList.isEmpty
           ? Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -58,9 +79,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       childAspectRatio: (1 / 1),
                       children: List.generate(subjectList.length, (index) {
                         return InkWell(
-                          splashColor: Colors.amber,
+                          splashColor: Colors.blue,
                           onTap: () => {_loadSubjectDetails(index)},
                           child: Card(
+                            color: Colors.blue[50],
                               child: Column(
                             children: [
                               Flexible(
@@ -91,11 +113,20 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                             ),
                                       Text(
                                         "RM " +
-                                        double.parse(subjectList[index].subject_price.toString()).toStringAsFixed(2)
-                                        ),
+                                        double.parse(subjectList[index].subject_price.toString()).toStringAsFixed(2),
+                                        style: const TextStyle(
+                                            fontSize: 16,),
+                                            ),
                                       Text(
                                         subjectList[index].subject_sessions.toString() +
-                                        " sessions"
+                                        " sessions",
+                                        style: const TextStyle(
+                                            fontSize: 16,),
+                                          ),
+                                      Text(
+                                        "Rating: " + subjectList[index].subject_rating.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16,),
                                           ),
                                     ],
                                   ))
@@ -118,7 +149,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                     return SizedBox(
                       width: 40,
                       child: TextButton(
-                          onPressed: () => {_loadSubjects(index + 1, "")},
+                          onPressed: () => {_loadSubjects(index + 1, "", dropdownvalue)},
                           child: Text(
                             (index + 1).toString(),
                             style: TextStyle(color: color),
@@ -131,7 +162,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
     );
   }
   
-  void _loadSubjects(int pageno, String _search) {
+  void _loadSubjects(int pageno, String _search, String _rating) {
     curpage = pageno;
     numofpage ?? 1;
     http.post(
@@ -139,6 +170,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
         body: {
           'pageno': pageno.toString(),
           'search': _search,
+          'rating': _rating,
         }).timeout(
       const Duration(seconds: 5),
       onTimeout: () {
@@ -159,7 +191,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
           });
         } else {
           titlecenter = "No Subject Available";
+          subjectList.clear();
         }
+        setState(() {});
+      }else {
+        //do something
+        titlecenter = "No Subject Available";
+        subjectList.clear();
         setState(() {});
       }
     });
@@ -273,6 +311,73 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 },
               ),
             ],
+          );
+        });
+  }
+
+  void _loadSearchDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, StateSetter setState) {
+              return AlertDialog(
+                title: const Text(
+                  "Search",
+                ),
+                content: SizedBox(
+                  // height: screenHeight / 3,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                            labelText: 'Search Subejct',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        height: 60,
+                        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5.0))),
+                        child: DropdownButton(
+                          value: dropdownvalue,
+                          underline: const SizedBox(),
+                          isExpanded: true,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: rating.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      search = _searchController.text;
+                      Navigator.of(context).pop();
+                      _loadSubjects(1, search, dropdownvalue);
+                    },
+                    child: const Text("Search"),
+                  )
+                ],
+              );
+            },
           );
         });
   }
