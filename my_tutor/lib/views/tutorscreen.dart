@@ -73,7 +73,7 @@ class _TutorScreenState extends State<TutorScreen> {
                               Flexible(
                                 flex: 6,
                                 child: CachedNetworkImage(
-                                  imageUrl: CONSTANT.server +
+                                  imageUrl: CONSTANTS.server +
                                       "/my_tutor/mobile/assets/tutors/" +
                                       tutorList[index].tutor_id.toString() +
                                       '.jpg',
@@ -146,7 +146,7 @@ class _TutorScreenState extends State<TutorScreen> {
     curpage = pageno;
     numofpage ?? 1;
     http.post(
-        Uri.parse(CONSTANT.server + "/my_tutor/mobile/php/load_tutors.php"),
+        Uri.parse(CONSTANTS.server + "/my_tutor/mobile/php/load_tutors.php"),
         body: {
           'pageno': pageno.toString(),
           'search': _search,
@@ -192,7 +192,7 @@ class _TutorScreenState extends State<TutorScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CachedNetworkImage(
-                  imageUrl: CONSTANT.server +
+                  imageUrl: CONSTANTS.server +
                       "/my_tutor/mobile/assets/tutors/" +
                       tutorList[index].tutor_id.toString() +
                       '.jpg',

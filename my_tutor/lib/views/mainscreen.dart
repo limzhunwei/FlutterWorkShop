@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_tutor/models/user.dart';
 
 import '../models/subject.dart';
+import '../models/user.dart';
 import 'subjectscreen.dart';
 import 'tutorscreen.dart';
-
 
 class MainScreen extends StatefulWidget {
   final User user;
@@ -19,30 +19,43 @@ class _MainScreenState extends State<MainScreen> {
   late final Color? backgroundColor;
   List<Subject> subjectList = <Subject>[];
   late double screenHeight, screenWidth, resWidth;
-  String titlecenter = "Loading...";
-  String appbarTitle = "Subject";
-  var appBarTitleText = new Text("Subject");
   TextEditingController searchController = TextEditingController();
   String search = "";
+  late List<Widget> _widgetOptions;
 
+  _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   void initState() {
     super.initState();
+    _widgetOptions = <Widget>[
+    SubjectScreen(user: widget.user,),
+    const TutorScreen(),
+    const Text(
+      'Subscribe Page',
+    ),
+    const Text(
+      'Favourite Page',
+    ),
+    const Text(
+      'Profile Page',
+    ),
+  ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: appBarTitleText,
-      // ),
       body: Center( child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.auto_stories),
-            label: 'Subject',
+            label: 'Subjects',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
@@ -67,53 +80,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromRGBO(3, 169, 244, 1),
+        selectedItemColor: const Color.fromRGBO(3, 169, 244, 1),
         onTap: _onItemTapped,
       ),
     );
   }
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    SubjectScreen(),
-    TutorScreen(),
-    Text(
-      'Subscribe Page',
-    ),
-    Text(
-      'Favourite Page',
-    ),
-    Text(
-      'Profile Page',
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      // if(index == 0){
-      //   appbarTitle = "Subject";
-      //   appBarTitleText = new Text(appbarTitle);
-      // }
-      // else if(index == 1){
-      //   appbarTitle = "Tutors";
-      //   appBarTitleText = new Text(appbarTitle);
-      // }
-      // else if(index == 2){
-      //   appbarTitle = "Subscribe";
-      //   appBarTitleText = new Text(appbarTitle);
-      // }
-      // else if(index == 3){
-      //   appbarTitle = "Favourite";
-      //   appBarTitleText = new Text(appbarTitle);
-      // }
-      // else if(index == 4){
-      //   appbarTitle = "Profile";
-      //   appBarTitleText = new Text(appbarTitle);
-      // }
-    });
-  }
-  
-
-  
 
 }

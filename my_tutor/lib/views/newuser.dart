@@ -315,7 +315,7 @@ class _NewUserState extends State<NewUser> {
     String base64Image = base64Encode(_image!.readAsBytesSync());
     
     http.post(
-        Uri.parse(CONSTANT.server + "/my_tutor/mobile/php/new_user.php"),
+        Uri.parse(CONSTANTS.server + "/my_tutor/mobile/php/new_user.php"),
         body: {
           "name": _username,
           "address": _useraddress,
