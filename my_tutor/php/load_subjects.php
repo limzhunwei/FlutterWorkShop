@@ -9,11 +9,15 @@ include_once("dbconnect.php");
 $results_per_page = 5;
 $pageno = (int)$_POST['pageno'];
 $search = $_POST['search'];
+$rating = $_POST['rating'];
 
 $page_first_result = ($pageno - 1) * $results_per_page;
 
-$sqlloadsubjects  = "SELECT * FROM `tbl_subjects` ORDER BY `tbl_subjects`.`subject_id` ASC";
-
+if ($rating == "All"){
+    $sqlloadsubjects  = "SELECT * FROM `tbl_subjects` WHERE `subject_name` LIKE '%$search%' ORDER BY `tbl_subjects`.`subject_id` ASC";
+}else{
+    $sqlloadsubjects  = "SELECT * FROM `tbl_subjects` WHERE `subject_name` LIKE '%$search%' AND `subject_rating` >= '$rating' ORDER BY `tbl_subjects`.`subject_id` ASC";
+}
 $result = $conn->query($sqlloadsubjects);
 $number_of_result = $result->num_rows;
 $number_of_page = ceil($number_of_result / $results_per_page);
