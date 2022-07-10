@@ -16,18 +16,45 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
+    // return Scaffold(
+    //     appBar: AppBar(
+    //       title: const Text('Payment'),
+    //     ),
+    //     body
+    //     : Stack(
+    //       children: <Widget>[
+    //         Expanded(
+    //           child: WebView(
+    //             initialUrl: CONSTANTS.server +
+    //                 "/my_tutor/mobile/php/payment.php?email=" +
+    //                 widget.user.email.toString() +
+    //                 '&mobile=' +
+    //                 widget.user.phone.toString() +
+    //                 '&name=' +
+    //                 widget.user.name.toString() +
+    //                 '&amount=' +
+    //                 widget.totalpayable.toString(),
+    //             javascriptMode: JavascriptMode.unrestricted,
+    //             onWebViewCreated: (WebViewController webViewController) {
+    //               _controller.complete(webViewController);
+    //             },
+    //           ),
+    //         )
+    //       ],
+    //     ));
+
+     return Scaffold(
+      appBar: AppBar(
           title: const Text('Payment'),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: WebView(
+      body: Stack(
+        children: <Widget>[
+          WebView(
                 initialUrl: CONSTANTS.server +
                     "/my_tutor/mobile/php/payment.php?email=" +
                     widget.user.email.toString() +
@@ -38,12 +65,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     '&amount=' +
                     widget.totalpayable.toString(),
                 javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (finish) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
                 },
               ),
-            )
-          ],
-        ));
+          isLoading ? const Center( child: CircularProgressIndicator(),)
+                    : Stack(),
+        ],
+      ),
+    );
+  
+
   }
 }
