@@ -196,7 +196,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
     );
   }
   
-  void _loadSubjects(int pageno, String _search, String _rating) {
+  void _loadSubjects(int pageno, String _search, String _rating) async {
     curpage = pageno;
     numofpage ?? 1;
     http.post(
@@ -213,7 +213,6 @@ class _SubjectScreenState extends State<SubjectScreen> {
       },
     ).then((response) {
       var jsondata = jsonDecode(response.body);
-
       if (response.statusCode == 200 && jsondata['status'] == 'success') {
         var extractdata = jsondata['data'];
         numofpage = int.parse(jsondata['numofpage']);

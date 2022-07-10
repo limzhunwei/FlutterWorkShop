@@ -21,33 +21,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text('Payment'),
-    //     ),
-    //     body
-    //     : Stack(
-    //       children: <Widget>[
-    //         Expanded(
-    //           child: WebView(
-    //             initialUrl: CONSTANTS.server +
-    //                 "/my_tutor/mobile/php/payment.php?email=" +
-    //                 widget.user.email.toString() +
-    //                 '&mobile=' +
-    //                 widget.user.phone.toString() +
-    //                 '&name=' +
-    //                 widget.user.name.toString() +
-    //                 '&amount=' +
-    //                 widget.totalpayable.toString(),
-    //             javascriptMode: JavascriptMode.unrestricted,
-    //             onWebViewCreated: (WebViewController webViewController) {
-    //               _controller.complete(webViewController);
-    //             },
-    //           ),
-    //         )
-    //       ],
-    //     ));
-
      return Scaffold(
       appBar: AppBar(
           title: const Text('Payment'),
@@ -74,12 +47,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   _controller.complete(webViewController);
                 },
               ),
-          isLoading ? const Center( child: CircularProgressIndicator(),)
-                    : Stack(),
+          isLoading 
+          ? const Center( 
+            child: CircularProgressIndicator(),
+            )
+          : Stack(),
         ],
       ),
     );
-  
-
   }
 }
